@@ -1,0 +1,113 @@
+
+
+   
+      #slideshow {
+        width: 800px;
+        height: 400px;
+        margin-left: 100px;
+        overflow: hidden;
+        position: absolute;
+        top: 310px;        
+        right:560px;
+        border-radius: 12px;
+        border: 10px solid white;
+      
+        
+
+      }
+       
+      .slide {
+        float: left;
+        width: 800px;
+        height: 400px;
+      }
+       
+
+      .slide-wrapper {
+         
+     
+        width: calc( 800px * 7);
+       
+    
+        animation: slide 60s ease infinite;
+      }
+       
+    
+      .slide:nth-child(1) {
+        background: url(../renderer/templates/G1.png);
+        object-fit: cover;
+        width: 800px;
+        height: 400px;
+
+      }
+       
+      .slide:nth-child(2) {
+        background: url(../renderer/templates/G2.png);
+        object-fit: cover;
+        width: 800px;
+        height: 400px;
+      }
+       
+      .slide:nth-child(3) {
+        background: url(../renderer/templates/G3.png);
+        object-fit: cover;
+        width: 800px;
+        height: 400px;
+      }
+
+      .slide:nth-child(4) {
+        background: url(../renderer/templates/G4.png);
+        width: 800px;
+        height: 400px;
+        
+      }
+
+      .slide:nth-child(5) {
+        background: url(../renderer/templates/G5.png);
+        width: 800px;
+        height: 400px;
+        
+      }
+
+      .slide:nth-child(6) {
+        background: url(../renderer/templates/G6.png);
+        width: 800px;
+        height: 400px;
+        
+      }
+
+      .slide:nth-child(7) {
+        background: url(../renderer/templates/G7.png);
+        width: 800px;
+        height: 400px;
+        
+      }
+
+
+    
+     @keyframes slide {
+      0% {
+          margin-left: 0px;
+      }
+      14.2857% {
+          margin-left: calc(-800px * 1);
+      }
+      28.5714% {
+          margin-left: calc(-800px * 2);
+      }
+      42.8571% {
+          margin-left: calc(-800px * 3);
+      }
+      57.1429% {
+          margin-left: calc(-800px * 4);
+      }
+      71.4286% {
+          margin-left: calc(-800px * 5);
+      }
+      85.7143% {
+          margin-left: calc(-800px * 6);
+      }
+      100% {
+          margin-left: 0px; 
+      }
+  }
