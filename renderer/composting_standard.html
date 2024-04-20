@@ -483,7 +483,7 @@
 
                         if (currentPhase === 'Phase 4' || currentPhase === 'Phase 5') {
                             // Call /data/sensor with the obtained process ID
-                            const sensorResponse = await axios.get(`http://localhost:3000/data/sensor/?process_id=${processId}`);
+                            const sensorResponse = await axios.get(`http://localhost:3000/data/sensor?process_id=${processId}`);
                             console.log('Sensor data received:', sensorResponse.data);
 
 
