@@ -481,18 +481,24 @@
                     const processResponse = await axios.get(`http://localhost:3000/data/process?process_id=${processId}`);
                     const currentPhase = processResponse.data.result.current_phase;
 
-                        if (currentPhase === 'Phase 4') {
+                        if (currentPhase === 'Phase 4' || currentPhase === 'Phase 5') {
                             // Call /data/sensor with the obtained process ID
                             const sensorResponse = await axios.get(`http://localhost:3000/data/sensor/?process_id=${processId}`);
                             console.log('Sensor data received:', sensorResponse.data);
 
+
+                        
                             // Redirect to history.html with sensor data as query parameter
                             const sensorDataQueryParam = encodeURIComponent(JSON.stringify(sensorResponse.data));
                             window.localStorage.setItem('sensorData', sensorDataQueryParam); // Store sensor data in local storage
+                           
+                           
+                            //  CALL/COLLECT
                             
-
                             // Send POST request to /stop endpoint
-                            await axios.post('http://localhost:3000/stop');
+                            axios.post(`http://localhost:3000/stop?process_id=${processId}`);
+
+
 
                             window.location.href = 'history.html'; // Redirect to history.html
                     } else {
@@ -511,73 +517,7 @@
 
         </script>
 
-        <!-- <script>
-            function fetchData(processId) {
-                axios.get(`http://localhost:3000/data/process?process_id=${processId}`)
-                    .then(function(response) {
-                        const { current_phase, mature_result, start_time } = response.data.result;
-
-                        let progressValue = 0;
-                        switch (current_phase) {
-                            case 'Phase 1':
-                                progressValue = 25;
-                                break;
-                            case 'Phase 2':
-                                progressValue = 50;
-                                break;
-                            case 'Phase 3':
-                                progressValue = 75;
-                                break;
-                            case 'Phase 4':
-                                progressValue = 100;
-                                break;
-                            default:
-                                progressValue = 0;
-                        }
-                        document.getElementById('progress-val').value = progressValue;
-                        document.getElementById('compost-status').textContent = mature_result;
-                        document.getElementById('data-content').textContent = `Start Time: ${start_time}`;
-
-                        const collectButton = document.getElementById('collect-btn');
-                        collectButton.disabled = progressValue !== 100 || mature_result !== "Mature";
-
-                        if (progressValue === 100 && mature_result === "Mature") {
-                            document.getElementById('finalCollect').style.display = 'block';
-                        } 
-                    })
-                    .catch(function(error) {
-                        console.error('Error fetching data:', error);
-                    });
-            }
-
-            async function fetchDataForCurrentProcess() {
-                try {
-                    const response = await axios.get('http://localhost:3000/current_process', {
-                        headers: {
-                            'accept': 'application/json'
-                        }
-                    });
-                    const { process_id } = response.data;
-                    
-                    
-                    const processResponse = await axios.get(`http://localhost:3000/data/process?process_id=${process_id}`);
-
-                  
-                    const { current_phase } = processResponse.data.result;
-
-                   
-                    fetchData(process_id, current_phase);
-                } catch (error) {
-                    console.error('Error:', error.message);
-                }
-            }
-
-
-            window.onload = function() {
-                fetchDataForCurrentProcess(); 
-                setInterval(fetchDataForCurrentProcess, 3600000); 
-            };
-        </script> -->
+       
 
         <script>
             async function fetchData(processId) {
@@ -591,19 +531,20 @@
                     let progressValue = 0;
                     switch (current_phase) {
                         case 'Phase 1':
-                            progressValue = 25;
-                            break;
-                        case 'Phase 2':
-                            progressValue = 50;
-                            break;
-                        case 'Phase 3':
-                            progressValue = 75;
-                            break;
-                        case 'Phase 4':
-                            progressValue = 100;
-                            break;
-                        default:
-                            progressValue = 0;
+                        progressValue = 25;
+                        break;
+                    case 'Phase 2':
+                        progressValue = 50;
+                        break;
+                    case 'Phase 3':
+                        progressValue = 75;
+                        break;
+                    case 'Phase 4':
+                    case 'Phase 5':
+                        progressValue = 100;
+                        break;
+                    default:
+                        progressValue = 0;
                     }
                     document.getElementById('progress-val').value = progressValue;
                     document.getElementById('compost-status').textContent = mature_result;
@@ -639,7 +580,7 @@
         
             window.onload = function() {
                 fetchDataForCurrentProcess(); 
-                // Remove the setInterval call to prevent continuous reloading
+                setInterval(fetchDataForCurrentProcess, 10000); // Update every 10 seconds
             };
         </script>
         

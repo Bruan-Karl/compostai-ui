@@ -398,39 +398,67 @@
         });
 
 
-        document.getElementById('okButton').addEventListener('click', function() {
-            axios.post('http://localhost:3000/stop')
-            window.ipcRenderer.send('closeCompostingWindow');
-        });
+       
     </script>
 
-    <script>
-        document.getElementById('yesButton').addEventListener('click', function() {
-            axios.post('http://localhost:3000/stop')
-                .then(function(response) {
-                    console.log('Process started:', response.data);
-                    
-                })
-                .catch(function(error) {
-                    console.error('Error starting process:', error);
-                    
-                });
+   
+
+        <script>
+            
+            document.getElementById('yesButton').addEventListener('click', function(event) {
+            stopProcess();
+            event.preventDefault();
+        
         });
-    </script>
+
+        async function stopProcess() {
+            try {
+                // Fetch the current process ID
+                const currentProcessResponse = await axios.get('http://localhost:3000/current_process', {
+                    headers: {
+                        'accept': 'application/json'
+                    }
+                });
+                const processId = currentProcessResponse.data.process_id;
+
+                // Send POST request to /stop endpoint with the obtained process ID
+                const stopProcessResponse = await axios.post(`http://localhost:3000/stop?process_id=${processId}`, null, {});
+                console.log('Process stopped:', stopProcessResponse.data);
+            } catch (error) {
+                console.error('Error stopping process:', error);
+            }
+        }
+
+    </script> 
 
     <script>
-        document.getElementById('okButton').addEventListener('click', function() {
-            axios.post('http://localhost:3000/stop')
-                .then(function(response) {
-                    console.log('Process started:', response.data);
-                    
-                })
-                .catch(function(error) {
-                    console.error('Error starting process:', error);
-                    
-                });
-        });
-    </script>
+            
+        document.getElementById('okButton').addEventListener('click', function(event) {
+        stopProcess();
+        event.preventDefault();
+        window.ipcRenderer.send('closeCompostingWindow');
+    
+    });
+
+    async function stopProcess() {
+        try {
+            // Fetch the current process ID
+            const currentProcessResponse = await axios.get('http://localhost:3000/current_process', {
+                headers: {
+                    'accept': 'application/json'
+                }
+            });
+            const processId = currentProcessResponse.data.process_id;
+
+            // Send POST request to /stop endpoint with the obtained process ID
+            const stopProcessResponse = await axios.post(`http://localhost:3000/stop?process_id=${processId}`, null, {});
+            console.log('Process stopped:', stopProcessResponse.data);
+        } catch (error) {
+            console.error('Error stopping process:', error);
+        }
+    }
+
+    </script> 
 
 
     <script>
