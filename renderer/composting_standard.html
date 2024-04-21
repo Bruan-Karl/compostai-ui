@@ -468,52 +468,40 @@
 
 
         <script>
-            async function collectButtonClick() {
-                const collectButton = document.getElementById('collect-btn');
-                collectButton.disabled = true;
+         
+             async function collectButtonClick() {
+            const collectButton = document.getElementById('collect-btn');
+            collectButton.disabled = true;
 
-                try {
-                    // Fetch the current process ID
-                    const currentProcessResponse = await axios.get('http://localhost:3000/current_process');
-                    const processId = currentProcessResponse.data.process_id;
+            try {
+             
+                const currentProcessResponse = await axios.get('http://localhost:3000/current_process');
+                const processId = currentProcessResponse.data.process_id;
 
-                    // Fetch current phase
-                    const processResponse = await axios.get(`http://localhost:3000/data/process?process_id=${processId}`);
-                    const currentPhase = processResponse.data.result.current_phase;
+                const processResponse = await axios.get(`http://localhost:3000/data/process?process_id=${processId}`);
+                const currentPhase = processResponse.data.result.current_phase;
 
-                        if (currentPhase === 'Phase 4' || currentPhase === 'Phase 5') {
-                            // Call /data/sensor with the obtained process ID
-                            const sensorResponse = await axios.get(`http://localhost:3000/data/sensor?process_id=${processId}`);
-                            console.log('Sensor data received:', sensorResponse.data);
+                if (currentPhase === 'Phase 4') {
+                    const sensorResponse = await axios.post(`http://localhost:3000/collect?process_id=${processId}`, null, {});
 
+    
+                    await axios.post(`http://localhost:3000/stop?process_id=${processId}`);
+      
+                    localStorage.setItem('processId', processId);
 
-                        
-                            // Redirect to history.html with sensor data as query parameter
-                            const sensorDataQueryParam = encodeURIComponent(JSON.stringify(sensorResponse.data));
-                            window.localStorage.setItem('sensorData', sensorDataQueryParam); // Store sensor data in local storage
-                           
-                           
-                            //  CALL/COLLECT
-                            
-                            // Send POST request to /stop endpoint
-                            axios.post(`http://localhost:3000/stop?process_id=${processId}`);
-
-
-
-                            window.location.href = 'history.html'; // Redirect to history.html
-                    } else {
-                        alert('Data can only be saved in Phase 4.');
-                    }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        alert('Error collecting data. Please try again.');
-                    } finally {
-                        // Enable the button after the process is complete
-                        collectButton.disabled = false;
-                        // Notify the main process to close this window after the redirect
-                        window.ipcRenderer.send('closeCompostingWindow');
-                    }
+                    window.location.href = 'history.html';
+                } else {
+                    alert('Data can only be saved in Phase 4.');
                 }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error collecting data. Please try again.');
+            } finally {
+                collectButton.disabled = false;
+                window.ipcRenderer.send('closeCompostingWindow');
+            }
+        }
+
 
         </script>
 

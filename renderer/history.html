@@ -168,10 +168,11 @@
         </div>
     </div>
 
+    
     <img src="./templates/compostifai-logo.png" alt="CompostifAI Logo">
 
     <div class="database-label-container">
-        <p id="database-label"> Batch_No.    Humidity       Temperature        Conductivity       pH         Nitrogen      Phosphorus        Potassium    </p>
+        <p id="database-label"> DATA HISTORY  </p>
         <div class="database-list-container">
             <div id="get-database" class="database-list">
                 <ul>
@@ -194,42 +195,98 @@
     </script>
 
 
-<script>
-    window.onload = function() {
-        const sensorDataQueryParam = window.localStorage.getItem('sensorData');
-        if (sensorDataQueryParam) {
-            const sensorData = JSON.parse(decodeURIComponent(sensorDataQueryParam));
-            const sensorDataContainer = document.querySelector('.sensor_data');
 
-            const labels = {
-                'process_id': 'Batch #:',
-                'humidity': 'Humidity:',
-                'temperature': 'Temperature:',
-                'ec': 'Conductivity:',
-                'ph': 'pH:',
-                'nitrogen': 'Nitrogen:',
-                'phosphorus': 'Phosphorus:',
-                'potassium': 'Potassium:',
-                'timestamp': 'Date & Time:',
-            };
+    <!-- <script>
+        
+        
+            const currentProcessResponse = await axios.get('http://localhost:3000/current_process');
+            const processId = currentProcessResponse.data.process_id;
 
-            
-            sensorData.results.forEach(result => {
-                Object.keys(result).forEach(key => {
-                    const label = labels[key] || key;
-                    const value = result[key];
-                    const listItem = document.createElement('div');
-                    listItem.innerHTML = `<strong>${label}</strong> ${value}<br>`;
-                    sensorDataContainer.appendChild(listItem);
+            // Fetch historical sensor data using obtained process_id
+            const sensorDataResponse = await axios.get(`http://localhost:3000/data/history?process_id=${processId}`);
+            const sensorData = sensorDataResponse.data; // Assuming sensor data is returned directly
+
+        window.onload = function() {
+            const sensorDataQueryParam = window.localStorage.getItem('sensorData');
+            if (sensorDataQueryParam) {
+                const sensorData = JSON.parse(decodeURIComponent(sensorDataQueryParam));
+                const sensorDataContainer = document.querySelector('.sensor_data');
+
+                const labels = {
+                    'process_id': 'Batch #:',
+                    'humidity': 'Humidity:',
+                    'temperature': 'Temperature:',
+                    'ec': 'Conductivity:',
+                    'ph': 'pH:',
+                    'nitrogen': 'Nitrogen:',
+                    'phosphorus': 'Phosphorus:',
+                    'potassium': 'Potassium:',
+                    'timestamp': 'Date & Time:',
+                };
+
+                
+                sensorData.results.forEach(result => {
+                    Object.keys(result).forEach(key => {
+                        const label = labels[key] || key;
+                        const value = result[key];
+                        const listItem = document.createElement('div');
+                        listItem.innerHTML = `<strong>${label}</strong> ${value}<br>`;
+                        sensorDataContainer.appendChild(listItem);
+                    });
+                    sensorDataContainer.innerHTML += '<hr>';
                 });
-                sensorDataContainer.innerHTML += '<hr>';
-            });
+            }
         }
-    }
-</script>
+    </script> -->
+
+
+    <script>
+        window.onload = async function() {
+            try {
+                // Fetch the processId from local storage
+                const processId = localStorage.getItem('processId');
+    
+                // Fetch historical sensor data using obtained process_id
+                const sensorDataResponse = await axios.get(`http://localhost:3000/data/history?process_id=${processId}`);
+                const sensorData = sensorDataResponse.data.results; // Extracting the 'results' array from the response
+    
+                const sensorDataContainer = document.querySelector('.sensor_data');
+    
+                const labels = {
+                    'process_id': 'Batch #:',
+                    'humidity': 'Humidity:',
+                    'temperature': 'Temperature:',
+                    'ec': 'Conductivity:',
+                    'ph': 'pH:',
+                    'nitrogen': 'Nitrogen:',
+                    'phosphorus': 'Phosphorus:',
+                    'potassium': 'Potassium:',
+                    'timestamp': 'Date & Time:',
+                };
+    
+                sensorData.forEach(result => {
+                    const data = result.result; // Extracting the 'result' object from each item in the 'results' array
+                    const listItem = document.createElement('div');
+                    Object.keys(data).forEach(key => {
+                        const label = labels[key] || key;
+                        const value = data[key];
+                        listItem.innerHTML += `<strong>${label}</strong> ${value}<br>`;
+                    });
+                    listItem.innerHTML += '<hr>';
+                    sensorDataContainer.appendChild(listItem); // Append each listItem to the container
+                });
+            } catch (error) {
+                console.error('Error fetching historical sensor data:', error);
+            }
+        };
+    </script>
+    
+    
 
 
 
+
+        
 
 
     
