@@ -180,8 +180,8 @@
 
         #list-container {
             position: relative;
-            width: 90%; /* Adjust width as needed */
-            margin: 0 auto; /* Center the list horizontally */
+            width: 90%; 
+            margin: 0 auto; 
         } 
     </style>
 </head>
@@ -227,11 +227,10 @@
    
         <p>
             <ol>
-                <li>Put the CARBON materials in the shredder, and start shredding. compostifAI adheres to 25:1 ratio, 25 CARBON (browns) : 1 NITROGEN (greens). OR SIMPLY, 3KG CARBON + 4 to 5kg of NITROGEN.</li>
-                <li>Set aside the shredded CARBON, and start shredding NITROGEN.</li>
-                <li>MIX the shredded CARBON + NITROGEN into the shredder.</li>
+                <li>Put the CARBON materials in the shredder, and start shredding. compostifAI adheres to 22:1 ratio, 22 CARBON (browns) : 1 NITROGEN (greens). OR SIMPLY, 3KG CARBON + 4 to 5kg of NITROGEN.</li>
+                <li>MIX the shredded CARBON + unshredded NITROGEN into the shredder, and start shredding. Note: Add more carbon than nitrogen. DO NOT ADD ALL AT ONCE.</li>
                 <li>Once done, add the shredded compost into the bin. Make sure to properly close the lid of the bin before starting.</li>
-                <li>Press Start Button</li>
+                <li>Press Start Button. Make sure you have the composting materials inside the composting bin.</li>
                 <li>Choose which Method you want to proceed. STANDARD is for RAW MATERIALS that you want to turn into compost. MATURE is for compost that has gone through compost maturity, but you want it to mature further.</li>
                 <li>Wait for the composting process to finish.</li>
             </ol>
@@ -244,7 +243,6 @@
     
     <script>
         document.getElementById('back-btn').addEventListener('click', () => {
-            // Send a message to the main process to create or show the main window
             window.ipcRenderer.send('goToMainWindow');
         });
     </script>

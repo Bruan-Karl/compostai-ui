@@ -308,6 +308,10 @@ ipcMain.on('goToMainWindow', () => {
     if (historyWindow && !historyWindow.isDestroyed()) {
         historyWindow.close();
     }
+
+    if (methodWindow && !methodWindow.isDestroyed()) {
+        methodWindow.close();
+    }
 });
 
 

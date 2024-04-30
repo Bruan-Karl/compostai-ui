@@ -86,6 +86,21 @@
             border: 2px solid #C1FF72;
 
         }
+
+        #back-btn {
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+    text-align: center; 
+    padding: 5px 0; 
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+
+
+
     
 
     </style>
@@ -103,23 +118,28 @@
                 <img src="./templates/mature.png" alt="matured-icon">
                 <button id="matured-btn" type="button"  onclick="maturedButtonClick()" >MATURED</button>
             </div>
+
+            <div class="button-container">
+                <button id="back-btn">BACK</button>
+            </div>
+
         </div>
     </div>
 
 
 
-          
+<!--           
     <script>
       
             document.getElementById('standard-btn').addEventListener('click', async function(event) { 
                 startProcess();
-                event.preventDefault(); // Prevent the default form submission behavior
+                event.preventDefault();  
             });
      
     
         async function startProcess() {
             try {
-                // Fetch the current process ID
+               
                 const currentProcessResponse = await axios.get('http://localhost:3000/current_process', {
                     headers: {
                         'accept': 'application/json'
@@ -127,14 +147,39 @@
                 });
                 const processId = currentProcessResponse.data.process_id;
     
-                // Send POST request to /start endpoint with the obtained process ID
                 const startProcessResponse = await axios.post(`http://localhost:3000/start`, null, {});
                 console.log('Process started:', startProcessResponse.data);
             } catch (error) {
                 console.error('Error starting process:', error);
             }
         }
-    </script>
+    </script> -->
+
+
+             
+    <script>
+      
+        document.getElementById('standard-btn').addEventListener('click', async function(event) { 
+            startProcess();
+            event.preventDefault();  
+        });
+ 
+
+    async function startProcess() {
+        try {
+           
+            const startProcessResponse = await axios.post(`http://localhost:3000/start`, {
+                headers: {
+                    'accept': 'application/json'
+                }
+            });
+           
+            console.log('Process started:', startProcessResponse.data);
+        } catch (error) {
+            console.error('Error starting process:', error);
+        }
+    }
+</script>
     
 
 
@@ -142,7 +187,6 @@
     
     <script>
         document.getElementById('matured-btn').addEventListener('click', function() {
-            // Send POST request to /start endpoint
             axios.post('http://localhost:3000/start')
                 .then(function(response) {
                     console.log('Process started:', response.data);
@@ -170,10 +214,13 @@
             window.close();
         }
 
-        
-
     </script>
 
+    <script>
+        document.getElementById('back-btn').addEventListener('click', () => {
+            window.ipcRenderer.send('goToMainWindow');
+        });
+    </script>
      
 
 

@@ -181,55 +181,9 @@
         });
     </script>
 
-    <!-- <script>
-                    // Function to check if there is a current process running
-            async function checkCurrentProcess() {
-                try {
-                    const currentProcessResponse = await axios.get('http://localhost:3000/current_process', {
-                        headers: {
-                            'accept': 'application/json'
-                        }
-                    });
-                    // If there is no current process running, enable the start button
-                    if (!currentProcessResponse.data || !currentProcessResponse.data.process_id) {
-                        enableStartButton();
-                    } else {
-                        disableStartButton();
-                    }
-                } catch (error) {
-                    console.error('Error checking current process:', error);
-                    // In case of error, you may choose to handle it accordingly
-                }
-            }
-
-           
-            function enableStartButton() {
-                // Assuming you have a button element with id 'start-button'
-                document.getElementById('start-btn').disabled = false;
-            }
-
-            // Function to disable the start button
-            function disableStartButton() {
-                // Assuming you have a button element with id 'start-button'
-                document.getElementById('start-btn').disabled = true;
-            }
-
-            // Call the checkCurrentProcess function when the page loads
-            window.addEventListener('load', function() {
-                checkCurrentProcess();
-            });
-
-            // Function to handle start button click
-            function startButton() {
-                window.ipcRenderer.send('startButtonClick');
-            }
-
-    </script> -->
-
-
-
-
     
+
+
     <script>
          function compostingButton() {
         window.ipcRenderer.send('compostingButtonClick');
