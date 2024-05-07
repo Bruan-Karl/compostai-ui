@@ -127,79 +127,56 @@
     </div>
 
 
-
-<!--           
     <script>
-      
-            document.getElementById('standard-btn').addEventListener('click', async function(event) { 
-                startProcess();
-                event.preventDefault();  
-            });
-     
-    
-        async function startProcess() {
-            try {
-               
-                const currentProcessResponse = await axios.get('http://localhost:3000/current_process', {
-                    headers: {
-                        'accept': 'application/json'
-                    }
-                });
-                const processId = currentProcessResponse.data.process_id;
-    
-                const startProcessResponse = await axios.post(`http://localhost:3000/start`, null, {});
-                console.log('Process started:', startProcessResponse.data);
-            } catch (error) {
-                console.error('Error starting process:', error);
-            }
-        }
-    </script> -->
-
-
-             
-    <script>
-      
         document.getElementById('standard-btn').addEventListener('click', async function(event) { 
-            startProcess();
+            startStandardProcess();
             event.preventDefault();  
         });
- 
-
-    async function startProcess() {
-        try {
-           
-            const startProcessResponse = await axios.post(`http://localhost:3000/start`, {
-                headers: {
-                    'accept': 'application/json'
-                }
-            });
-           
-            console.log('Process started:', startProcessResponse.data);
-        } catch (error) {
-            console.error('Error starting process:', error);
-        }
-    }
-</script>
     
-
-
+        async function startStandardProcess() {
+            try {
+                const startProcessResponse = await axios.post(
+                    `http://localhost:3000/start`, 
+                    {},  
+                    {
+                        headers: {
+                            'accept': 'application/json'
+                        }
+                    }
+                );
+                console.log('Standard process started:', startProcessResponse.data);
+            } catch (error) {
+                console.error('Error starting standard process:', error);
+            }
+        }
+    </script>
     
     
     <script>
-        document.getElementById('matured-btn').addEventListener('click', function() {
-            axios.post('http://localhost:3000/start')
-                .then(function(response) {
-                    console.log('Process started:', response.data);
-                    
-                })
-                .catch(function(error) {
-                    console.error('Error starting process:', error);
-                    
-                });
+        document.getElementById('matured-btn').addEventListener('click', async function(event) { 
+            startMatureProcess();
+            event.preventDefault();  
         });
+    
+        async function startMatureProcess() {
+            try {
+                const startProcessResponse = await axios.post(
+                    `http://localhost:3000/start?is_mature_process=true`, 
+                    {},  
+                    {
+                        headers: {
+                            'accept': 'application/json'
+                        }
+                    }
+                );
+                console.log('Mature process started:', startProcessResponse.data);
+            } catch (error) {
+                console.error('Error starting mature process:', error);
+            }
+        }
     </script>
-
-   
+    
+ 
     
 
     <script>
@@ -221,7 +198,7 @@
             window.ipcRenderer.send('goToMainWindow');
         });
     </script>
-     
+
 
 
 
